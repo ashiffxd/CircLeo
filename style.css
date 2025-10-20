@@ -1,0 +1,157 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+  background-color: #000;
+  color: #fff;
+}
+
+h1 {
+  font-size: clamp(1.5rem, 5vw, 2.5rem);
+  text-align: center;
+  margin-bottom: 20px;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+}
+
+/* Logo Styles */
+.logo-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+.site-logo {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  box-shadow: 0 0 15px rgba(0, 255, 136, 0.6);
+  object-fit: cover;
+}
+
+/* Canvas wrapper */
+.canvas-wrapper {
+  position: relative;
+  width: 90vw;
+  max-width: 800px;
+  aspect-ratio: 8 / 5;
+  margin-bottom: 20px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+}
+
+#draw-canvas {
+  width: 100%;
+  height: 100%;
+  border: 2px solid #444;
+  background-color: #111;
+  display: block;
+  border-radius: 16px;
+  box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+#target-dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  background-color: red;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Buttons */
+#buttons-div {
+  margin-top: 10px;
+  text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  align-items: center;
+}
+
+#buttons-div button,
+#buttons-div select {
+  margin: 0 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #111;
+  color: #00ff88;
+  border: 2px solid #00ff88;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+  flex: 1 1 auto;
+  min-width: 120px;
+  font-weight: bold;
+  text-transform: uppercase;
+  box-shadow: 0 0 10px rgba(0, 255, 136, 0.4);
+}
+
+#buttons-div button:hover,
+#buttons-div select:hover {
+  background-color: #00ff88;
+  color: #000;
+  box-shadow: 0 0 20px rgba(0, 255, 136, 0.7);
+  transform: scale(1.05);
+}
+
+#buttons-div button:active,
+#buttons-div select:active {
+  transform: scale(0.95);
+  box-shadow: 0 0 5px rgba(0, 255, 136, 0.7);
+}
+
+/* Dropdown */
+#stroke-color {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: #111;
+  color: #00ff88;
+  border-radius: 12px;
+  padding: 10px;
+}
+
+#stroke-color option {
+  border-radius: 8px;
+}
+
+/* Result Panel */
+#result-panel {
+  margin-top: 20px;
+  text-align: center;
+}
+
+#score-value,
+#best-score-value {
+  font-size: clamp(1.2rem, 4vw, 2rem);
+  font-weight: bold;
+  color: #00ff88;
+}
+
+#score-message {
+  margin-top: 5px;
+  color: #ccc;
+  font-size: 0.9rem;
+}
+
+#instructions {
+  font-size: clamp(0.8rem, 2.5vw, 1rem);
+  text-align: center;
+  color: #ccc;
+  margin-top: 10px;
+}

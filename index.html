@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CircLeo - Draw The Perfect Circle</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/png" href="assets/logo.png" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+  />
+</head>
+<body>
+  <div class="page-container">
+    <h1>CircLeo - Draw The Perfect Circle</h1>
+
+    <div id="instructions">
+      <p>Draw a circle around the red dot as accurately as possible.</p>
+    </div>
+
+    <div class="canvas-wrapper">
+      <canvas id="draw-canvas" width="800" height="500"></canvas>
+      <div id="target-dot"></div>
+    </div>
+
+    <div id="buttons-div">
+      <!-- Stroke color dropdown -->
+      <label for="stroke-color" style="color:#fff;">Stroke Color:</label>
+      <select id="stroke-color">
+        <option value="#00ff88" selected>Green</option>
+        <option value="#ff0000">Red</option>
+        <option value="#0000ff">Blue</option>
+        <option value="#ffff00">Yellow</option>
+        <option value="#ff00ff">Magenta</option>
+        <option value="#00ffff">Cyan</option>
+        <option value="#ffffff">White</option>
+        <option value="#ffa500">Orange</option>
+        <option value="#800080">Purple</option>
+        <option value="#c71585">Pink</option>
+        <option value="#a52a2a">Brown</option>
+        <option value="#808080">Gray</option>
+        <option value="#008000">Dark Green</option>
+        <option value="#000080">Navy</option>
+      </select>
+
+      <!-- Clear button -->
+      <button title="Clear Drawing" id="clear-btn">Clear</button>
+
+      <!-- Challenge Icon -->
+      <div class="challenge-container">
+        <button id="challenge-btn" title="Challenge your friends!">
+          <i class="fa-solid fa-flag-checkered"></i>
+        </button>
+        <div id="copy-popup"></div>
+      </div>
+    </div>
+
+    <!-- Result Panel -->
+    <div id="result-panel">
+      <h2 style="font-family:Verdana, Geneva, Tahoma, sans-serif;">
+        Current Score: <span id="score-value">--%</span>
+      </h2>
+      <h2 style="font-family:Verdana, Geneva, Tahoma, sans-serif;">
+        Best Score: <span id="best-score-value">--%</span>
+      </h2>
+      <p id="score-message"></p>
+    </div>
+
+    <script src="app.js"></script>
+  </div>
+</body>
+</html>
