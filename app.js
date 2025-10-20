@@ -8,24 +8,22 @@ const scoreValue = document.getElementById('score-value');
 const scoreMessage = document.getElementById('score-message');
 const bestScoreValue = document.getElementById('best-score-value');
 const challengeBtn = document.getElementById('challenge-btn');
-const copyPopup = document.createElement('div');  // ✅ create popup element
+const copyPopup = document.createElement('div'); // Popup element
 
-// Popup styling
+// --- Popup styling ---
 copyPopup.id = 'copy-popup';
 copyPopup.textContent = 'Challenge copied!';
 copyPopup.style.position = 'absolute';
-copyPopup.style.opacity = '0';        // invisible initially
-copyPopup.style.pointerEvents = 'none'; // so it doesn't block clicks
+copyPopup.style.opacity = '0';
+copyPopup.style.pointerEvents = 'none';
 copyPopup.style.transition = 'opacity 0.3s ease';
 document.body.appendChild(copyPopup);
 
-
-
-// Load best score from localStorage
+// --- Load best score ---
 let bestScore = localStorage.getItem('bestScore') || 0;
 bestScoreValue.textContent = bestScore + '%';
 
-// === Canvas setup ===
+// --- Canvas setup ---
 function resizeCanvas() {
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
@@ -41,7 +39,7 @@ function positionTargetDot() {
     targetDot.style.top = `${rect.height / 2 - dotSize / 2}px`;
 }
 
-// === Drawing variables ===
+// --- Drawing variables ---
 let drawing = false;
 let points = [];
 let currentColor = '#00ff88';
@@ -50,8 +48,17 @@ colorSelect.addEventListener('change', (e) => {
     currentColor = e.target.value;
 });
 
-// === Pointer drawing events ===
-canvas.addEventListener('pointerdown', (e) => {
+// --- Helpers ---
+function getCanvasCoords(e) {
+    const rect = canvas.getBoundingClientRect();
+    return {
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top
+    };
+}
+
+// --- Drawing functions ---
+function startDrawing(e) {
     e.preventDefault();
     drawing = true;
     points = [];
@@ -64,39 +71,39 @@ canvas.addEventListener('pointerdown', (e) => {
     ctx.moveTo(x, y);
     points.push({ x, y });
     updateLiveScore();
-});
+}
 
-canvas.addEventListener('pointermove', (e) => {
+function draw(e) {
     if (!drawing) return;
     const { x, y } = getCanvasCoords(e);
     ctx.lineTo(x, y);
     ctx.stroke();
     points.push({ x, y });
     updateLiveScore();
-});
+}
 
-canvas.addEventListener('pointerup', () => {
-    drawing = false;
-    ctx.closePath();
-    showFinalScore();
-});
-
-canvas.addEventListener('pointerleave', () => {
+function endDrawing() {
     if (!drawing) return;
     drawing = false;
     ctx.closePath();
     showFinalScore();
-});
-
-function getCanvasCoords(e) {
-    const rect = canvas.getBoundingClientRect();
-    return {
-        x: e.clientX - rect.left,
-        y: e.clientY - rect.top
-    };
 }
 
-// Clear canvas
+// --- Pointer and Touch Events ---
+canvas.addEventListener('pointerdown', startDrawing);
+canvas.addEventListener('pointermove', draw);
+canvas.addEventListener('pointerup', endDrawing);
+canvas.addEventListener('pointerleave', endDrawing);
+
+// Touch fallback for mobile
+canvas.addEventListener('touchstart', (e) => startDrawing(e.touches[0]));
+canvas.addEventListener('touchmove', (e) => draw(e.touches[0]));
+canvas.addEventListener('touchend', endDrawing);
+
+// Prevent scrolling while drawing on mobile
+canvas.style.touchAction = 'none';
+
+// --- Clear canvas ---
 clearBtn.addEventListener('click', () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     points = [];
@@ -104,7 +111,7 @@ clearBtn.addEventListener('click', () => {
     scoreMessage.textContent = '';
 });
 
-// Warning
+// --- Show warning ---
 function showWarning(msg) {
     ctx.save();
     ctx.font = "bold 20px Arial";
@@ -114,10 +121,9 @@ function showWarning(msg) {
     ctx.restore();
 }
 
-// Accuracy calculation
+// --- Accuracy calculation ---
 function calculateAccuracyCenter(points) {
     if (points.length < 3) return 0;
-
     const cx = canvas.width / 2;
     const cy = canvas.height / 2;
 
@@ -144,14 +150,14 @@ function calculateAccuracyCenter(points) {
     return Math.max(0, Math.min(combined * 100, 100));
 }
 
-// Live score update
+// --- Live score ---
 function updateLiveScore() {
     if (points.length < 3) return;
     const acc = calculateAccuracyCenter(points);
     scoreValue.textContent = acc.toFixed(2) + '%';
 }
 
-// Final score + best score
+// --- Final score ---
 function showFinalScore() {
     if (points.length < 3) return;
 
@@ -171,8 +177,6 @@ function showFinalScore() {
     scoreValue.textContent = acc.toFixed(2) + '%';
 
     let newHighScore = false;
-
-    // Update best score
     if (acc > bestScore) {
         bestScore = acc.toFixed(2);
         bestScoreValue.textContent = bestScore + '%';
@@ -180,7 +184,6 @@ function showFinalScore() {
         newHighScore = true;
     }
 
-    // Messages
     if (newHighScore) {
         scoreMessage.textContent = "🎉 Congratulations! New High Score! 🎉";
         scoreMessage.style.color = "#00ff88";
@@ -200,25 +203,23 @@ function showFinalScore() {
     }
 }
 
-// === Challenge Copy ===
+// --- Challenge Copy ---
 challengeBtn.addEventListener('click', () => {
-    const bestScore = bestScoreValue.textContent.replace('%', '').trim();
-    const text = `My circle is ${bestScore}% perfect, can you beat that? https://neal.fun/perfect-circle/`;
+    const bestScoreText = bestScoreValue.textContent.replace('%', '').trim();
+    const text = `My circle is ${bestScoreText}% perfect, can you beat that? https://neal.fun/perfect-circle/`;
 
     navigator.clipboard.writeText(text).then(() => {
         const rect = challengeBtn.getBoundingClientRect();
-        copyPopup.style.position = 'absolute';
         copyPopup.style.left = rect.left + rect.width / 2 + 'px';
         copyPopup.style.top = rect.top - 35 + 'px';
         copyPopup.style.transform = 'translateX(-50%)';
         copyPopup.style.background = '#d0ff00ff';
         copyPopup.style.color = '#000';
-        copyPopup.style.padding = '6px 12px';4
+        copyPopup.style.padding = '6px 12px';
         copyPopup.style.borderRadius = '8px';
         copyPopup.style.fontSize = '14px';
         copyPopup.style.fontWeight = 'bold';
         copyPopup.style.whiteSpace = 'nowrap';
-        copyPopup.style.transition = 'opacity 0.3s ease';
         copyPopup.style.opacity = '1';
 
         setTimeout(() => {
