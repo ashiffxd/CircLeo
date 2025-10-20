@@ -167,7 +167,7 @@ function showFinalScore() {
     const threshold = Math.max(20, avgR * 0.1);
 
     if (Math.hypot(end.x - start.x, end.y - start.y) > threshold) {
-        showWarning("Join the starting and ending point accurately!");
+        showWarning("Make it a closed circle!");
         scoreValue.textContent = '--%';
         scoreMessage.textContent = '';
         return;
