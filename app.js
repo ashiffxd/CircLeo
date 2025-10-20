@@ -206,7 +206,7 @@ function showFinalScore() {
 // --- Challenge Copy ---
 challengeBtn.addEventListener('click', () => {
     const bestScoreText = bestScoreValue.textContent.replace('%', '').trim();
-    const text = `My circle is ${bestScoreText}% perfect, can you beat that? https://neal.fun/perfect-circle/`;
+    const text = `My circle is ${bestScoreText}% perfect, can you beat that? https://circleo.vercel.app/`;
 
     navigator.clipboard.writeText(text).then(() => {
         const rect = challengeBtn.getBoundingClientRect();
