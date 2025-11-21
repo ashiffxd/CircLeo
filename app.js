@@ -52,7 +52,7 @@ function getCanvasCoords(e) {
 
 // --- Drawing functions ---
 function startDrawing(e) {
-    e.preventDefault();
+    if (e.preventDefault) e.preventDefault();
     drawing = true;
     points = [];
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -78,6 +78,9 @@ function startDrawing(e) {
 
 function draw(e) {
     if (!drawing) return;
+    // Prevent default if it's a touch event to stop scrolling
+    if (e.preventDefault) e.preventDefault();
+    
     const { x, y } = getCanvasCoords(e);
     ctx.lineTo(x, y);
     ctx.stroke();
@@ -99,9 +102,20 @@ canvas.addEventListener('pointerup', endDrawing);
 canvas.addEventListener('pointerleave', endDrawing);
 
 // Touch fallback for mobile
-canvas.addEventListener('touchstart', (e) => startDrawing(e.touches[0]));
-canvas.addEventListener('touchmove', (e) => draw(e.touches[0]));
-canvas.addEventListener('touchend', endDrawing);
+canvas.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    startDrawing(e.touches[0]);
+}, { passive: false });
+
+canvas.addEventListener('touchmove', (e) => {
+    e.preventDefault();
+    draw(e.touches[0]);
+}, { passive: false });
+
+canvas.addEventListener('touchend', (e) => {
+    e.preventDefault();
+    endDrawing();
+});
 
 // Prevent scrolling while drawing on mobile
 canvas.style.touchAction = 'none';
