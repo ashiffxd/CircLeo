@@ -2,72 +2,89 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
   <title>CircLeo - Draw The Perfect Circle</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="icon" type="image/png" href="assets/logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
   <link
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
   />
 </head>
 <body>
-  <div class="page-container">
-    <h1>CircLeo - Draw The Perfect Circle</h1>
-
-    <div id="instructions">
-      <p>Draw a circle around the red dot as accurately as possible.</p>
-    </div>
-
-    <div class="canvas-wrapper">
-      <canvas id="draw-canvas" width="800" height="500"></canvas>
-      <div id="target-dot"></div>
-    </div>
-
-    <div id="buttons-div">
-      <!-- Stroke color dropdown -->
-      <label for="stroke-color" style="color:#fff;">Stroke Color:</label>
-      <select id="stroke-color">
-        <option value="#00ff88" selected>Green</option>
-        <option value="#ff0000">Red</option>
-        <option value="#0000ff">Blue</option>
-        <option value="#ffff00">Yellow</option>
-        <option value="#ff00ff">Magenta</option>
-        <option value="#00ffff">Cyan</option>
-        <option value="#ffffff">White</option>
-        <option value="#ffa500">Orange</option>
-        <option value="#800080">Purple</option>
-        <option value="#c71585">Pink</option>
-        <option value="#a52a2a">Brown</option>
-        <option value="#808080">Gray</option>
-        <option value="#008000">Dark Green</option>
-        <option value="#000080">Navy</option>
-      </select>
-
-      <!-- Clear button -->
-      <button title="Clear Drawing" id="clear-btn">Clear</button>
-
-      <!-- Challenge Icon -->
-      <div class="challenge-container">
-        <button id="challenge-btn" title="Challenge your friends!">
-          <i class="fa-solid fa-flag-checkered"></i>
-        </button>
-        <div id="copy-popup"></div>
+  <div id="particles-container"></div>
+  
+  <div class="app-container">
+    <header>
+      <div class="logo-container">
+        <h1>CircLeo</h1>
+        <span class="subtitle">The Pursuit of Perfection</span>
       </div>
-    </div>
+    </header>
 
-    <!-- Result Panel -->
-    <div id="result-panel">
-      <h2 style="font-family:Verdana, Geneva, Tahoma, sans-serif;">
-        Current Score: <span id="score-value">--%</span>
-      </h2>
-      <h2 style="font-family:Verdana, Geneva, Tahoma, sans-serif;">
-        Best Score: <span id="best-score-value">--%</span>
-      </h2>
-      <p id="score-message"></p>
-    </div>
+    <main>
+      <div class="game-area">
+        <div class="score-hud">
+          <div class="score-item">
+            <span class="label">Accuracy</span>
+            <div class="value-wrapper">
+              <span id="score-value" class="hud-value">0</span><span class="percent">%</span>
+            </div>
+          </div>
+          <div class="score-divider"></div>
+          <div class="score-item">
+            <span class="label">High Score</span>
+            <div class="value-wrapper">
+              <span id="best-score-value" class="hud-value">0%</span>
+            </div>
+          </div>
+        </div>
 
-    <script src="app.js"></script>
+        <div class="canvas-wrapper">
+          <canvas id="draw-canvas" width="800" height="500"></canvas>
+          <div id="target-dot"></div>
+          <div id="instruction-overlay">
+            <p>Draw a perfect circle around the dot</p>
+          </div>
+        </div>
+
+        <div class="controls-glass">
+          <div class="control-group">
+            <label for="stroke-color">Ink Color</label>
+            <div class="custom-select-wrapper">
+              <select id="stroke-color">
+                <option value="#00ff88" selected>Neon Green</option>
+                <option value="#ff0055">Neon Red</option>
+                <option value="#00ccff">Cyan</option>
+                <option value="#ffcc00">Gold</option>
+                <option value="#bd00ff">Electric Purple</option>
+                <option value="#ffffff">Pure White</option>
+              </select>
+              <i class="fa-solid fa-chevron-down select-arrow"></i>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button id="clear-btn" class="btn-secondary">
+              <i class="fa-solid fa-rotate-right"></i> Clear
+            </button>
+            <button id="challenge-btn" class="btn-primary" title="Challenge your friends!">
+              <i class="fa-solid fa-share-nodes"></i> Share
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div id="result-panel" class="glass-panel hidden">
+        <p id="score-message">Draw a circle to start</p>
+      </div>
+    </main>
   </div>
+
+  <div id="copy-popup">Link Copied!</div>
+  <script src="app.js"></script>
 </body>
 </html>
