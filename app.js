@@ -5,11 +5,9 @@ const clearBtn = document.getElementById('clear-btn');
 const colorSelect = document.getElementById('stroke-color');
 const targetDot = document.getElementById('target-dot');
 const scoreValue = document.getElementById('score-value');
-const scoreMessage = document.getElementById('score-message');
 const bestScoreValue = document.getElementById('best-score-value');
 const challengeBtn = document.getElementById('challenge-btn');
 const copyPopup = document.getElementById('copy-popup');
-const resultPanel = document.getElementById('result-panel');
 const instructionOverlay = document.getElementById('instruction-overlay');
 
 // --- Load best score ---
@@ -69,10 +67,7 @@ function startDrawing(e) {
     
     instructionOverlay.style.opacity = '0';
     
-    // Show result panel immediately for live score
-    resultPanel.classList.remove('hidden');
-    scoreMessage.textContent = "Drawing...";
-    scoreMessage.style.color = "#8892b0";
+    // Reset live score
     scoreValue.textContent = "0";
 }
 
@@ -110,7 +105,6 @@ canvas.style.touchAction = 'none';
 clearBtn.addEventListener('click', () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     points = [];
-    resultPanel.classList.add('hidden');
     instructionOverlay.style.opacity = '1';
     scoreValue.textContent = "0";
 });
@@ -192,7 +186,6 @@ function createParticles() {
 // --- Final score ---
 function showFinalScore() {
     if (points.length < 3) {
-        resultPanel.classList.add('hidden');
         instructionOverlay.style.opacity = '1';
         return;
     }
@@ -203,15 +196,12 @@ function showFinalScore() {
     const threshold = Math.max(20, avgR * 0.1);
 
     if (Math.hypot(end.x - start.x, end.y - start.y) > threshold) {
-        scoreMessage.textContent = "Close the circle!";
-        scoreMessage.style.color = "#ff0055";
+        // "Close the circle" warning logic removed from UI, just reset score to 0
         scoreValue.textContent = "0";
-        // Keep result panel visible
         return;
     }
 
     const acc = calculateAccuracyCenter(points);
-    // resultPanel is already visible
     animateScore(acc);
 
     let newHighScore = false;
@@ -223,15 +213,7 @@ function showFinalScore() {
     }
 
     if (newHighScore) {
-        scoreMessage.textContent = "New High Score! 🎉";
-        scoreMessage.style.color = "#00ff88";
         createParticles();
-    } else {
-        if (acc < 50) scoreMessage.textContent = 'Keep practicing!';
-        else if (acc < 80) scoreMessage.textContent = 'Not bad!';
-        else if (acc < 90) scoreMessage.textContent = 'Impressive!';
-        else scoreMessage.textContent = 'Perfection!';
-        scoreMessage.style.color = "#fff";
     }
 }
 
